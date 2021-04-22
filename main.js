@@ -11,6 +11,9 @@ const HEIGHT = window.innerHeight-((MARGINTOP+MARGINBOTTOM)+(2));
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
+console.log(WIDTH);
+console.log(canvas.width);
+
 document.body.style.margin = MARGINTOP.toString() + "px " + MARGINRIGHT.toString() + "px " + MARGINBOTTOM.toString() + "px " + MARGINLEFT.toString() + "px";
 
 window.addEventListener("resize", function() {
@@ -61,8 +64,8 @@ class Player {
 
 class Food {
     constructor(x, y, r, c) {
-        this.x = Math.random() * WIDTH;
-        this.y = y;
+        this.x = Math.floor(Math.random() * WIDTH-r) + 1+r;
+        this.y = Math.floor(Math.random() * HEIGHT) + 1;
         this.r = r;
         this.c = c;
     }
@@ -87,13 +90,14 @@ var player = new Player(0, 0, 10, "#93C4F6");
 var Foods = [];
 
 for (i = 0; i < 10; i++) {
-    Foods[i] = new Food(0, 10, 10, "red");
+    Foods.push(new Food(0, 10, 10, "red"));
 }
+console.log(WIDTH);
 function Update() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     player.Draw();
     player.Update();
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < Foods.length; i++) {
         Foods[i].Draw();
         if (Foods[i].Check()) {
             console.log("Collision with " + i);
