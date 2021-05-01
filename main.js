@@ -108,20 +108,29 @@ class Food {
     
 }
 
-var time = 3;
+var time = 12;
+var highscore = localStorage.getItem("highscore");
 var collected = 0;
-var player = new Player(WIDTH/2, HEIGHT/2, 10, colors[5]);
+var numFoods = 25;
+var radius = (WIDTH+HEIGHT)/300;
+var player = new Player(WIDTH/2, HEIGHT/2, radius, colors[5]);
 var Foods = [];
 
-for (i = 0; i < 25; i++) {
-    Foods.push(new Food(0, 10, 10, colors[2]));
+for (i = 0; i < numFoods; i++) {
+    Foods.push(new Food(0, 10, radius, colors[2]));
 }
 console.log(WIDTH);
 function Update() {
+    if (collected > highscore) {
+        highscore = collected;
+        localStorage.setItem("highscore", highscore);
+    }
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     ctx.font = WIDTH/20 + "px Verdana";
     ctx.fillStyle = colors[6];
     ctx.fillText(time, WIDTH/2-(WIDTH/20)/2, HEIGHT/2+(HEIGHT/20)/2);
+    ctx.fillText(collected+"/"+numFoods, 50, 100);
+    ctx.fillText("Highscore: " + localStorage.getItem("highscore"), 50, 250);
     player.Draw();
     player.Update();
     for (i = 0; i < Foods.length; i++) {
@@ -144,8 +153,14 @@ function Timer() {
 }
 
 function GameOver() {
-    ctx.fillStyle = colors[6];
+    ctx.fillStyle = colors[1];
+    ctx.font = WIDTH/10 + "px Verdana";
     ctx.fillText("Game Over", WIDTH/2-(WIDTH/8), HEIGHT/2-(HEIGHT/10)/2);
+    if (collected > highscore) {
+        highscore = collected;
+        localStorage.setItem("highscore", highscore);
+    }
+
 }
 
 Update();
